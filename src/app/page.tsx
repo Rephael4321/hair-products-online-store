@@ -1,103 +1,168 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export const metadata: Metadata = {
+  title: "דף הבית | מוצרי שיער",
+  description:
+    "מוצרי שיער מקצועיים עם שירות אישי, איכות ללא פשרות, ושקיפות מלאה.",
+};
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  category: "קרם לשיער" | "סטייל";
+  image: string;
+};
+
+// ✅ Products + images (match your /public tree; space in folder is URL-encoded)
+const products: Product[] = [
+  {
+    id: 1,
+    name: "מסיכת קולגן לשיער Karseell בנפח 500 מיליליטר/100 מילילילר, אסנס תיקון עמוק לשיער יבש או פגום, לכל",
+    price: 67.9,
+    category: "קרם לשיער",
+    image: "/images/products/lotion%20cream/lotion-cream-1.avif",
+  },
+  {
+    id: 2,
+    name: "שמן קיק",
+    price: 36.9,
+    category: "קרם לשיער",
+    image: "/images/products/lotion%20cream/lotion-cream-2.webp",
+  },
+  {
+    id: 3,
+    name: "שמן מרולה",
+    price: 36.9,
+    category: "קרם לשיער",
+    image: "/images/products/lotion%20cream/lotion-cream-3.webp",
+  },
+  {
+    id: 4,
+    name: "מסכת שיקום שמן מרוקאי MOROCCANOIL",
+    price: 89.9,
+    category: "סטייל",
+    image: "/images/products/style/style-1.png",
+  },
+  {
+    id: 5,
+    name: "מסכה לשיער 911 500 מל ביוטופ BIOTOP",
+    price: 149,
+    category: "סטייל",
+    image: "/images/products/style/style-2.webp",
+  },
+  {
+    id: 6,
+    name: "קרם לחות ועיצוב לשיער 500 מל שמן מרוקאי MOROCCANOIL",
+    price: 88.9,
+    category: "סטייל",
+    image: "/images/products/style/style-3.webp",
+  },
+];
+
+export default function HomePage() {
+  // Group products by category (renders sections)
+  const byCategory = products.reduce<Record<string, Product[]>>((acc, p) => {
+    (acc[p.category] ??= []).push(p);
+    return acc;
+  }, {});
+
+  return (
+    <main className="bg-white">
+      {/* ===== Hero (Home image) ===== */}
+      <section className="relative w-full">
+        <div className="group relative h-[46vh] min-h-[340px] w-full overflow-hidden md:h-[64vh]">
+          <Image
+            src="/images/home.jpg"
+            alt="מוצרי שיער – איכות, טיפוח, ברק"
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+            priority
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/55 via-white/10 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center px-4">
+              <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 drop-shadow-sm">
+                Hair Products
+              </h1>
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/85 px-5 py-2 text-sm text-neutral-800 backdrop-blur-sm">
+                <span>איכות • טיפוח • ברק</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* ===== Business blurb (new) ===== */}
+      <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="mb-3 text-2xl md:text-3xl font-semibold tracking-tight">
+            מוצרים מקצועיים. ליווי אישי. תוצאות שמרגישים.
+          </h2>
+          <p className="text-neutral-700 text-base md:text-lg leading-8">
+            אנחנו בוחרים עבורכם מוצרי שיער שעובדים באמת—ממותגים מובילים ועד
+            פתרונות מדויקים לשגרה יומיומית. אצלנו תקבלו התאמה אישית, הסבר שימוש
+            ברור ושירות שאפשר לסמוך עליו, מהרכישה ועד הבית.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== Products ===== */}
+      <section className="border-t border-neutral-200 bg-neutral-50">
+        <div className="mx-auto max-w-6xl px-4 py-12 md:py-16">
+          <h3 className="mb-8 text-center text-2xl md:text-3xl font-semibold tracking-tight">
+            מוצרים נבחרים
+          </h3>
+
+          <div className="space-y-12">
+            {Object.entries(byCategory).map(([cat, items]) => (
+              <div key={cat}>
+                <div className="mb-5 flex items-center justify-between">
+                  <h4 className="text-xl md:text-2xl font-semibold text-neutral-900">
+                    {cat}
+                  </h4>
+                </div>
+
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                  {items.map((p) => (
+                    <li
+                      key={p.id}
+                      className="group rounded-2xl border border-neutral-200 bg-white p-3 md:p-4 shadow-sm hover:shadow-md transition"
+                    >
+                      {/* Uniform image sizing */}
+                      <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-neutral-100">
+                        <Image
+                          src={p.image}
+                          alt={p.name}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          priority={p.id <= 3}
+                        />
+                      </div>
+
+                      <div className="mt-3 md:mt-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="rounded-full bg-neutral-900/90 px-2.5 py-0.5 text-[11px] md:text-xs text-white">
+                            {p.category}
+                          </span>
+                          <span className="font-semibold text-neutral-900">
+                            ₪{p.price.toFixed(1)}
+                          </span>
+                        </div>
+                        <h5 className="mt-2 text-sm md:text-base font-medium leading-6 text-neutral-900 line-clamp-2">
+                          {p.name}
+                        </h5>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
